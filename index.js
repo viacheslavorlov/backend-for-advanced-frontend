@@ -1,17 +1,3 @@
-// See https://github.com/typicode/json-server#module
-
-
-
-// Add this before server.use(router)
-
-server.use(router)
-server.listen(3000, () => {
-    console.log('JSON Server is running')
-})
-
-// Export the Server API
-module.exports = server
-
 const jsonServer = require('json-server')
 const middlewares = jsonServer.defaults()
 const fs = require('fs');
