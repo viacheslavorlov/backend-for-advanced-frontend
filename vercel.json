@@ -8,7 +8,7 @@
     ],
     "functions": {
         "index.js": {
-            "memory": 2048,
+            "memory": 1024,
             "includeFiles": "db.json"
         }
     },
