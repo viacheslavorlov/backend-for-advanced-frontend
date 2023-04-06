@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node ./index.js"
   },
+  "keywords": [],
   "author": "viacheslav",
   "license": "ISC",
   "dependencies": {
