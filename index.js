@@ -9,7 +9,7 @@ function readDB() {
 function writeDB(data) {
 	fs.writeFileSync(dbFile, JSON.stringify(data, null, 2));
 }
-// авторизация
+// авторизация для пользователя
 app.post('/login', (req, res) => {
 	try {
 		const { username, password } = req.body;
