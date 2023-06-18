@@ -1,12 +1,16 @@
-const fs = require('fs');
-const jsonServer = require('json-server');
-const path = require('path');
-const server = jsonServer.create();
-const router = jsonServer.router(path.resolve(__dirname, 'db.json'));
-server.use(jsonServer.defaults({}));
-server.use(jsonServer.bodyParser);
-
-server.post('/login', (req, res) => {
+const express = require("express");
+const app = express();
+const port = 3000;
+const fs = require("fs");
+const dbFile = "db.json";
+function readDB() {
+	return JSON.parse(fs.readFileSync(dbFile, "utf-8"));
+}
+function writeDB(data) {
+	fs.writeFileSync(dbFile, JSON.stringify(data, null, 2));
+}
+// авторизация
+app.post('/login', (req, res) => {
 	try {
 		const { username, password } = req.body;
 		const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
@@ -20,87 +24,94 @@ server.post('/login', (req, res) => {
 			return res.json(userFromBd);
 		}
 		
-		return res.status(403).json({ message: 'User not found' });
+		let errorMessage = 'User not found';
+		
+		return res.status(403).json({ message: errorMessage });
 	} catch (e) {
 		console.log(e);
-		return res.status(500).json({ message: e.message });
+		return res.status(500).json({ message: 'Произошла ошибка: ' + e.message });
 	}
 });
 
-// Эндпоинт для получения всех комментариев
-server.get('/comments', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const comments = db.comments;
-	return res.json(comments);
+
+// Работа с уведомлениями
+app.get("/api/notifications", (req, res) => {
+	const db = readDB();
+	res.json(db.notifications);
 });
-// Эндпоинт для добавления комментария
-server.post('/comments', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const comments = db.comments;
-	const newComment = req.body;
-	newComment.id = comments.length + 1;
-	comments.push(newComment);
-	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
-	return res.json(newComment);
+app.post("/api/notifications", (req, res) => {
+	const db = readDB();
+	const newNotification = req.body;
+	newNotification.id = Date.now().toString();
+	db.notifications.push(newNotification);
+	writeDB(db);
+	res.json(newNotification);
 });
-// Эндпоинт для получения профиля по ID
-server.get('/profile/:id', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const { id } = req.params;
-	const profile = db.profiles.find((p) => p.id === parseInt(id));
-	if (profile) {
-		return res.json(profile);
-	}
-	return res.status(404).json({ message: `Profile ${id} not found` });
+// Работа со статьями
+app.get("/api/articles", (req, res) => {
+	const db = readDB();
+	res.json(db.articles);
 });
-// Эндпоинт для обновления профиля по ID
-server.put('/profile/:id', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const { id } = req.params;
-	const profileIndex = db.profiles.findIndex((p) => p.id === parseInt(id));
-	if (profileIndex === -1) {
-		return res.status(404).json({ message: `Profile ${id} not found` });
-	}
-	const updatedProfile = req.body;
-	updatedProfile.id = parseInt(id);
-	db.profiles[profileIndex] = updatedProfile;
-	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
-	return res.json(updatedProfile);
-});
-// Эндпоинт для получения уведомлений
-server.get('/notifications', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const notifications = db.notifications;
-	return res.json(notifications);
-});
-// Эндпоинт для получения всех статей
-server.get('/articles', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const articles = db.articles;
-	return res.json(articles);
-});
-// Эндпоинт для добавления статьи
-server.post('/articles', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const articles = db.articles;
+app.post("/api/articles", (req, res) => {
+	const db = readDB();
 	const newArticle = req.body;
-	newArticle.id = articles.length + 1;
-	articles.push(newArticle);
-	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
-	return res.json(newArticle);
+	newArticle.id = Date.now().toString();
+	db.articles.push(newArticle);
+	writeDB(db);
+	res.json(newArticle);
 });
-// Эндпоинт для получения статьи по ID
-server.get('/articles/:id', (req, res) => {
-	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-	const { id } = req.params;
-	const article = db.articles.find((a) => a.id === parseInt(id));
-	if (article) {
-		return res.json(article);
-	}
-	return res.status(404).json({ message: `Article ${id} not found` });
+// Работа с комментариями
+app.get("/api/comments", (req, res) => {
+	const db = readDB();
+	res.json(db.comments);
 });
-// Запуск сервера
-server.use(router);
-server.listen(process.env.PORT || 8000, () => {
-	console.log('Server is running');
+app.post("/api/comments", (req, res) => {
+	const db = readDB();
+	const newComment = req.body;
+	newComment.id = Date.now().toString();
+	db.comments.push(newComment);
+	writeDB(db);
+	res.json(newComment);
+});
+// Работа с пользователями
+app.get("/api/users", (req, res) => {
+	const db = readDB();
+	res.json(db.users);
+});
+app.post("/api/users", (req, res) => {
+	const db = readDB();
+	const newUser = req.body;
+	newUser.id = Date.now().toString();
+	db.users.push(newUser);
+	writeDB(db);
+	res.json(newUser);
+});
+// Работа с профилями
+app.get("/api/profile", (req, res) => {
+	const db = readDB();
+	res.json(db.profile);
+});
+app.post("/api/profile", (req, res) => {
+	const db = readDB();
+	const newProfile = req.body;
+	newProfile.id = Date.now().toString();
+	db.profile.push(newProfile);
+	writeDB(db);
+	res.json(newProfile);
+});
+// Работа с рейтингами статей
+app.get("/api/article-ratings", (req, res) => {
+	const db = readDB();
+	res.json(db["article-ratings"]);
+});
+app.post("/api/article-ratings", (req, res) => {
+	const db = readDB();
+	const newRating = req.body;
+	newRating.id = Date.now().toString();
+	db["article-ratings"].push(newRating);
+	writeDB(db);
+	res.json(newRating);
+});
+app.listen(port, () => {
+	console.log(`Server is running at http://localhost:${port}`);
 });
