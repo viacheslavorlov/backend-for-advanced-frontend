@@ -1,23 +1,11 @@
 const fs = require('fs');
 const jsonServer = require('json-server');
 const path = require('path');
-
 const server = jsonServer.create();
-
 const router = jsonServer.router(path.resolve(__dirname, 'db.json'));
-
 server.use(jsonServer.defaults({}));
 server.use(jsonServer.bodyParser);
 
-// Нужно для небольшой задержки, чтобы запрос проходил не мгновенно, имитация реального апи
-// server.use(async (req, res, next) => {
-//     await new Promise((res) => {
-//         setTimeout(res, 800);
-//     });
-//     next();
-// });
-
-// Эндпоинт для логина
 server.post('/login', (req, res) => {
 	try {
 		const { username, password } = req.body;
@@ -39,71 +27,80 @@ server.post('/login', (req, res) => {
 	}
 });
 
-// проверяем, авторизован ли пользователь
-// eslint-disable-next-line
-server.use((req, res, next) => {
-	if (!req.headers.authorization) {
-		return res.status(403).json({ message: 'AUTH ERROR' });
-	}
-	
-	next();
+// Эндпоинт для получения всех комментариев
+server.get('/comments', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const comments = db.comments;
+	return res.json(comments);
 });
-
-// обработчик POST запросов
-server.post('/:resource', (req, res) => {
-	try {
-		const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-		const { resource } = req.params;
-		
-		if (!db[resource]) {
-			return res.status(404).json({ message: `Resource ${resource} not found` });
-		}
-		
-		const newRecord = req.body;
-		newRecord.id = db[resource].length + 1;
-		db[resource].push(newRecord);
-		
-		fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
-		
-		return res.json(newRecord);
-	} catch (e) {
-		console.log(e);
-		return res.status(500).json({ message: e.message });
-	}
+// Эндпоинт для добавления комментария
+server.post('/comments', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const comments = db.comments;
+	const newComment = req.body;
+	newComment.id = comments.length + 1;
+	comments.push(newComment);
+	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
+	return res.json(newComment);
 });
-
-// обработчик PUT запросов
-server.put('/:resource/:id', (req, res) => {
-	try {
-		const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
-		const { resource, id } = req.params;
-		
-		if (!db[resource]) {
-			return res.status(404).json({ message: `Resource ${resource} not found` });
-		}
-		
-		const recordIndex = db[resource].findIndex((record) => record.id === parseInt(id));
-		
-		if (recordIndex === -1) {
-			return res.status(404).json({ message: `Record ${id} not found` });
-		}
-		
-		const updatedRecord = req.body;
-		updatedRecord.id = parseInt(id);
-		db[resource][recordIndex] = updatedRecord;
-		
-		fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
-		
-		return res.json(updatedRecord);
-	} catch (e) {
-		console.log(e);
-		return res.status(500).json({ message: e.message });
+// Эндпоинт для получения профиля по ID
+server.get('/profile/:id', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const { id } = req.params;
+	const profile = db.profiles.find((p) => p.id === parseInt(id));
+	if (profile) {
+		return res.json(profile);
 	}
+	return res.status(404).json({ message: `Profile ${id} not found` });
 });
-
+// Эндпоинт для обновления профиля по ID
+server.put('/profile/:id', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const { id } = req.params;
+	const profileIndex = db.profiles.findIndex((p) => p.id === parseInt(id));
+	if (profileIndex === -1) {
+		return res.status(404).json({ message: `Profile ${id} not found` });
+	}
+	const updatedProfile = req.body;
+	updatedProfile.id = parseInt(id);
+	db.profiles[profileIndex] = updatedProfile;
+	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
+	return res.json(updatedProfile);
+});
+// Эндпоинт для получения уведомлений
+server.get('/notifications', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const notifications = db.notifications;
+	return res.json(notifications);
+});
+// Эндпоинт для получения всех статей
+server.get('/articles', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const articles = db.articles;
+	return res.json(articles);
+});
+// Эндпоинт для добавления статьи
+server.post('/articles', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const articles = db.articles;
+	const newArticle = req.body;
+	newArticle.id = articles.length + 1;
+	articles.push(newArticle);
+	fs.writeFileSync(path.resolve(__dirname, 'db.json'), JSON.stringify(db, null, 2));
+	return res.json(newArticle);
+});
+// Эндпоинт для получения статьи по ID
+server.get('/articles/:id', (req, res) => {
+	const db = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'db.json'), 'UTF-8'));
+	const { id } = req.params;
+	const article = db.articles.find((a) => a.id === parseInt(id));
+	if (article) {
+		return res.json(article);
+	}
+	return res.status(404).json({ message: `Article ${id} not found` });
+});
+// Запуск сервера
 server.use(router);
-
-// запуск сервера
 server.listen(process.env.PORT || 8000, () => {
-	console.log('server is running');
+	console.log('Server is running');
 });
