@@ -1,4 +1,16 @@
 {
+    "posts": [
+        {
+            "id": "1",
+            "title": "json-server",
+            "userId": "1"
+        },
+        {
+            "id": "2",
+            "title": "json-server",
+            "userId": "2"
+        }
+    ],
     "notifications": [
         {
             "id": "1",
@@ -608,7 +620,7 @@
                 "IT"
             ],
             "blocks": [],
-            "id": "Dad-zdE"
+            "id": "298"
         },
         {
             "title": "Kotlin news",
@@ -621,7 +633,7 @@
                 "IT"
             ],
             "blocks": [],
-            "id": "m8WVKcj"
+            "id": "299"
         },
         {
             "title": "Kotlin news",
@@ -634,7 +646,7 @@
                 "IT"
             ],
             "blocks": [],
-            "id": "T5fwiVC"
+            "id": "330"
         },
         {
             "title": "Kotlin news",
@@ -647,7 +659,7 @@
                 "IT"
             ],
             "blocks": [],
-            "id": "s-2FaLk"
+            "id": "331"
         },
         {
             "title": "Kotlin news",
@@ -660,7 +672,7 @@
                 "IT"
             ],
             "blocks": [],
-            "id": "BYoinqo"
+            "id": "332"
         },
         {
             "title": "Kotlin news",
@@ -684,16 +696,44 @@
                     ]
                 }
             ],
+            "id": "333"
+        },
+        {
+            "type": [
+                "IT"
+            ],
+            "title": "Статья с трёмя блоками",
+            "img": "https://images.genius.com/7470c218dc765124f97b22f5191382a1.1000x667x1.jpg",
+            "createdAt": "08.07.2023",
+            "id": "EvUSuAG",
+            "userId": "2",
             "user": {
-                "id": "1",
-                "username": "admin",
-                "password": "123",
-                "roles": [
-                    "ADMIN"
-                ],
-                "avatar": "https://images.unsplash.com/photo-1519755898819-cef8c3021d6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
+                "id": "",
+                "username": ""
             },
-            "id": "69uTtIv"
+            "views": 0,
+            "subtitle": "триблока",
+            "blocks": [
+                {
+                    "id": "1688838858018",
+                    "title": "тут должен быть текст статьи",
+                    "paragraphs": [
+                        "тут очень много текста, ещё текст и ещеё тесфит  фывалофывлао фжлывоа лфоывал офыжлвоа жфлыоваж флоывлао фжлывоа фывжал офыжвлао фылвоа фыжвлоа фывоа жфылова жфлыова фыжлвоа жфыв"
+                    ],
+                    "type": "TEXT"
+                },
+                {
+                    "id": "1688838887426",
+                    "code": "import { Meta, StoryFn } from '@storybook/react'; import { Article } from '@/entities/Article'; import { RouterDecorator } from '@/shared/config/routerDecorator/routerDecorator'; import { StoreDecorator } from '@/shared/config/StoreDecorator/StoreDecorator'; import { ThemeDecorator } from '@/shared/config/themeDecorator/themeDecorator'; import { Theme } from '@/shared/const/theme/themeConst'; import { ArticleRecomendationList } from './ArticleRecomendationList';  const article: Article = {     id: '1',     title: 'asdf asdfasdf',     type: [],     blocks: [],     userId: '1',     views: 123,     img: '',     createdAt: '',     user: { id: '1', username: 'asdasdf' },     subtitle: 'asdfasdfasdfasdfasdf', };  export default {     title: 'features/ArticleRecomendationList',     component: ArticleRecomendationList,     argTypes: {         background: { control: 'background' },     },     decorators: [RouterDecorator, ThemeDecorator(Theme.LIGHT)],     parameters: {         mockData: [             {                 url: 'http://localhost:8080/articles?_limit=4',                 method: 'GET',                 status: 200,                 response: [{ ...article }, { ...article, id: '2' }, { ...article, id: '3' }],             },         ],     }, } as Meta<typeof ArticleRecomendationList>;  const Template: StoryFn<typeof ArticleRecomendationList> = (args) => <ArticleRecomendationList />;  export const LightArticleRecommendationList = Template.bind({}); LightArticleRecommendationList.args = {}; LightArticleRecommendationList.decorators = [StoreDecorator({})];  export const DarkArticleRecomendationList = Template.bind({}); DarkArticleRecomendationList.args = {}; DarkArticleRecomendationList.decorators = [ThemeDecorator(Theme.DARK), StoreDecorator({})];",
+                    "type": "CODE"
+                },
+                {
+                    "id": "1688838920394",
+                    "src": "https://sun9-62.userapi.com/impg/D4i1FVHRG9TElnROoOU_BDBfrq-NfDHoSVsszQ/cCjnemaWLzY.jpg?size=1280x853&quality=96&sign=b4e4cc024dec962058b25375eec3342d&c_uniq_tag=vVwdZE9T1MrcQNkrrg22SxbG3hWM53tWX5nnEQOrPI0&type=album",
+                    "title": "картинка",
+                    "type": "IMAGE"
+                }
+            ]
         }
     ],
     "comments": [
@@ -834,6 +874,18 @@
             "userId": "2",
             "text": "asdfasdfasdf",
             "id": "YPgoSw3"
+        },
+        {
+            "articleId": "13",
+            "userId": "2",
+            "text": "sdfgsdf sdf gsdf gsdf gsdfg",
+            "id": "-J0Iv8g"
+        },
+        {
+            "articleId": "4",
+            "userId": "1",
+            "text": "комментарий",
+            "id": "ULA9Eq8"
         }
     ],
     "users": [
@@ -844,6 +896,15 @@
             "roles": [
                 "ADMIN"
             ],
+            "features": {
+                "isArticleRatingEnabled": true,
+                "isCounterEnabled": true
+            },
+            "jsonSettings": {
+                "theme": "app_dark_theme",
+                "isFirstVisit": true,
+                "settingsPageHasBeenOpen": false
+            },
             "avatar": "https://images.unsplash.com/photo-1519755898819-cef8c3021d6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
         },
         {
@@ -853,6 +914,15 @@
             "roles": [
                 "USER"
             ],
+            "features": {
+                "isArticleRatingEnabled": false,
+                "isCounterEnabled": false
+            },
+            "jsonSettings": {
+                "theme": "app_orange_theme",
+                "isFirstVisit": true,
+                "settingsPageHasBeenOpen": false
+            },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         },
         {
@@ -862,6 +932,15 @@
             "roles": [
                 "MANAGER"
             ],
+            "features": {
+                "isArticleRatingEnabled": false,
+                "isCounterEnabled": true
+            },
+            "jsonSettings": {
+                "theme": "app_orange_theme",
+                "isFirstVisit": true,
+                "settingsPageHasBeenOpen": false
+            },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         },
         {
@@ -871,6 +950,10 @@
             "roles": [
                 "MANAGER"
             ],
+            "features": {
+                "isArticleRatingEnabled": true,
+                "isCounterEnabled": true
+            },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         }
     ],
@@ -884,17 +967,25 @@
             "country": "Belarus",
             "city": "Novgorod",
             "username": "admin",
+            "features": {
+                "isArticleRatingEnabled": false,
+                "isCounterEnabled": false
+            },
             "avatar": "https://images.unsplash.com/photo-1519755898819-cef8c3021d6f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80"
         },
         {
             "id": "2",
-            "first": "Her",
-            "last": "Nany",
+            "first": "Herr",
+            "last": "Sholz",
             "age": 45,
             "currency": "EUR",
             "country": "Belarus",
-            "city": "Moscow City",
+            "city": "Moscow",
             "username": "user",
+            "features": {
+                "isArticleRatingEnabled": false,
+                "isCounterEnabled": false
+            },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         },
         {
@@ -906,6 +997,10 @@
             "country": "Belarus",
             "city": "Novgorod",
             "username": "testuser",
+            "features": {
+                "isArticleRatingEnabled": false,
+                "isCounterEnabled": false
+            },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         }
     ],
@@ -1024,6 +1119,27 @@
             "rate": 5,
             "feedback": "Cypress rating feedback",
             "id": "XcTqToe"
+        },
+        {
+            "articleId": "13",
+            "userId": "2",
+            "rate": 2,
+            "feedback": "",
+            "id": "Nwuypy0"
+        },
+        {
+            "articleId": "J3kGO8r",
+            "userId": "2",
+            "rate": 3,
+            "feedback": "",
+            "id": "qemGhih"
+        },
+        {
+            "articleId": "EvUSuAG",
+            "userId": "1",
+            "rate": 4,
+            "feedback": "Jnpsd hflb jnpsdf",
+            "id": "5xnhU9j"
         }
     ],
     "profile-ratings": [
