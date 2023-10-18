@@ -898,7 +898,8 @@
             ],
             "features": {
                 "isArticleRatingEnabled": true,
-                "isCounterEnabled": true
+                "isCounterEnabled": true,
+                "isNewDesign": true
             },
             "jsonSettings": {
                 "theme": "app_dark_theme",
@@ -915,8 +916,9 @@
                 "USER"
             ],
             "features": {
-                "isArticleRatingEnabled": false,
-                "isCounterEnabled": false
+                "isArticleRatingEnabled": true,
+                "isCounterEnabled": true,
+                "isNewDesign": false
             },
             "jsonSettings": {
                 "theme": "app_orange_theme",
@@ -933,8 +935,9 @@
                 "MANAGER"
             ],
             "features": {
-                "isArticleRatingEnabled": false,
-                "isCounterEnabled": true
+                "isArticleRatingEnabled": true,
+                "isCounterEnabled": true,
+                "isNewDesign": false
             },
             "jsonSettings": {
                 "theme": "app_orange_theme",
@@ -952,7 +955,8 @@
             ],
             "features": {
                 "isArticleRatingEnabled": true,
-                "isCounterEnabled": true
+                "isCounterEnabled": true,
+                "isNewDesign": true
             },
             "avatar": "https://xakep.ru/wp-content/uploads/2018/05/171485/KuroiSH-hacker.jpg"
         }
